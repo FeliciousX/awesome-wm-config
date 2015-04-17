@@ -138,20 +138,12 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
--- In this section, I create my own simple tect widgets
+-- In this section, I create my own simple text widgets
 -- that get values form running the scripts
 -- MODIFY:
 cpuheat = wibox.widget.textbox()
 function getHeatStatus()
     local fd= io.popen("~/.config/awesome/heat.sh")
-    local status = fd:read()
-    fd:close()
-    return status
-end
-
-gpuheat = wibox.widget.textbox()
-function getGPUHeatStatus()
-    local fd= io.popen("~/.config/awesome/gpu-heat.sh")
     local status = fd:read()
     fd:close()
     return status
@@ -176,7 +168,7 @@ end
 -- A seperator between widgets is useful
 separator = wibox.widget.textbox()
 -- MODIFY:
-separator:set_markup(" / ")
+separator:set_markup(" | ")
 
 -- Create a wibox for each screen and add it
 mywibox = {}
@@ -260,8 +252,6 @@ for s = 1, screen.count() do
     right_layout:add(mytextclock)
     right_layout:add(separator)
     right_layout:add(cpuheat)
-    right_layout:add(separator)
-    right_layout:add(gpuheat)
     right_layout:add(separator)
     right_layout:add(volalsa)
     right_layout:add(separator)
@@ -530,18 +520,16 @@ client.connect_signal("manage", function (c, startup)
     end
 end)
 
--- Modify:
+-- MODIFY:
 -- Function Timer, repeats and updates widget values from scripts
 funcTimer = timer({timeout = 30})
 funcTimer:connect_signal("timeout", function()
     cpuheat:set_markup(getHeatStatus())
-    gpuheat:set_markup(getGPUHeatStatus())
     battery:set_markup(getBatStatus())
     volalsa:set_markup(getVolStatus())
 end)
 funcTimer:start()
 cpuheat:set_markup(getHeatStatus())
-gpuheat:set_markup(getGPUHeatStatus())
 battery:set_markup(getBatStatus())
 volalsa:set_markup(getVolStatus())
 
