@@ -6,7 +6,7 @@ low='#ff1919'
 discharge='#ffff19'
  
 # Modify this to read the right value
-capacity=`cat /sys/class/power_supply/BAT1/capacity`
+capacity=`cat /sys/class/power_supply/BAT0/capacity`
 
 if (($capacity <= 25));
 then
@@ -16,7 +16,7 @@ else
 fi
  
 # Modify this to read the right value
-status=`cat /sys/class/power_supply/BAT1/status`
+status=`cat /sys/class/power_supply/BAT0/status`
  
 if [[ "$status" = "Discharging" ]]
 then

@@ -117,9 +117,9 @@ myofficemenu = {
 
 mymainmenu = awful.menu({ items = {
     { "terminal", terminal},
-    { "web", "firefox"},
+    { "web", "google-chrome-stable"},
     { "files", "nautilus"},
-    { "music", "spotify"},
+    { "music", "amarok"},
     { "steam", "steam" },
     { "telegram", "telegram" },
     { "office", myofficemenu},
