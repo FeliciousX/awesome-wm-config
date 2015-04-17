@@ -67,11 +67,11 @@ local layouts =
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.floating,
-    awful.layout.suit.spiral,
-    awful.layout.suit.spiral.dwindle,
+    -- awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral.dwindle,
     awful.layout.suit.max,
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.magnifier
+    -- awful.layout.suit.max.fullscreen,
+    -- awful.layout.suit.magnifier
 }
 -- }}}
 
@@ -152,14 +152,6 @@ end
 gpuheat = wibox.widget.textbox()
 function getGPUHeatStatus()
     local fd= io.popen("~/.config/awesome/gpu-heat.sh")
-    local status = fd:read()
-    fd:close()
-    return status
-end
-
-battery = wibox.widget.textbox()
-function getBatStatus()
-    local fd= io.popen("~/.config/awesome/battery.sh")
     local status = fd:read()
     fd:close()
     return status
@@ -264,8 +256,6 @@ for s = 1, screen.count() do
     right_layout:add(gpuheat)
     right_layout:add(separator)
     right_layout:add(volalsa)
-    right_layout:add(separator)
-    right_layout:add(battery)
     right_layout:add(separator)
     right_layout:add(mylayoutbox[s])
 
@@ -536,13 +526,11 @@ funcTimer = timer({timeout = 30})
 funcTimer:connect_signal("timeout", function()
     cpuheat:set_markup(getHeatStatus())
     gpuheat:set_markup(getGPUHeatStatus())
-    battery:set_markup(getBatStatus())
     volalsa:set_markup(getVolStatus())
 end)
 funcTimer:start()
 cpuheat:set_markup(getHeatStatus())
 gpuheat:set_markup(getGPUHeatStatus())
-battery:set_markup(getBatStatus())
 volalsa:set_markup(getVolStatus())
 
 awful.util.spawn_with_shell("compton -m --shadow-exclude 'argb && _NET_WM_OPAQUE_REGION@:c'")
