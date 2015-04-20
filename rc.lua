@@ -431,7 +431,7 @@ awful.rules.rules = {
     buttons = clientbuttons } },
     -- You might want to select which applications do not get tiled
     -- Modify:
-    { rule = { class = "MPlayer" },
+    { rule = { class = "terminator" },
     properties = { floating = true } },
     { rule = { class = "pinentry" },
     properties = { floating = true } },
@@ -439,7 +439,7 @@ awful.rules.rules = {
     properties = { floating = true } },
     { rule = { class = "spotify" },
     properties = { floating = true } },
-    { rule = { class = "firefox" },
+    { rule = { class = "google-chrome-stable" },
     properties = { floating = true } },
     { rule = { class = "nautilus" },
     properties = { floating = true } },
@@ -533,8 +533,20 @@ cpuheat:set_markup(getHeatStatus())
 battery:set_markup(getBatStatus())
 volalsa:set_markup(getVolStatus())
 
-awful.util.spawn_with_shell("compton -m --shadow-exclude 'argb && _NET_WM_OPAQUE_REGION@:c'")
-awful.util.spawn_with_shell("redshift")
+function run_once(cmd)
+    findme = cmd
+    firstspace = cmd:find(" ")
+    if firstspace then
+        findme = cmd:sub(0, firstspace-1)
+    end
+    awful.util.spawn_with_shell("pgrep -u $USER -x " .. findme .. " > /dev/null || (" .. cmd .. ")")
+end
+
+run_once("nm-applet")
+run_once("redshift-gtk")
+
+--awful.util.spawn_with_shell("compton -m --shadow-exclude 'argb && _NET_WM_OPAQUE_REGION@:c'")
+awful.util.spawn_with_shell("compton --backend glx --paint-on-overlay --glx-no-stencil --vsync opengl-swc &")
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
