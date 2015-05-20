@@ -1,5 +1,4 @@
--- Configuring:
--- Check all the MODIFY sections
+-- {{{ Section: Library imports
 --
 -- Standard awesome library
 local gears = require("gears")
@@ -16,6 +15,7 @@ local beautiful = require("beautiful")
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
+-- }}}
 
 -- {{{ Section: Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -117,11 +117,12 @@ myofficemenu = {
 
 mymainmenu = awful.menu({ items = {
     { "terminal", terminal},
-    { "web", "google-chrome-stable"},
+    { "telegram", "telegram" },
+    { "firefox", "firefox"},
+    { "chrome", "google-chrome-stable"},
     { "files", "nautilus"},
     { "music", "amarok"},
     { "steam", "steam" },
-    { "telegram", "telegram" },
     { "office", myofficemenu},
     { "awesome", myawesomemenu},
     { "system", systemmenu}
@@ -337,15 +338,30 @@ function ()
 end),
 
 -- Menubar
-awful.key({ modkey }, "p", function() menubar.show() end),
+awful.key({ }, "Menu", function() menubar.show() end),
 
 -- Add custom keybindings for special programs
 -- Modify:
+
 -- Backlight
-awful.key({ }, "XF86MonBrightnessDown", function ()
+--awful.key({ }, "XF86MonBrightnessDown", function ()
+    --awful.util.spawn("xbacklight -dec 10", false) end),
+--awful.key({ }, "XF86MonBrightnessUp", function ()
+    --awful.util.spawn("xbacklight -inc 10", false) end),
+
+-- Touchpad toggle
+awful.key({ }, "XF86TouchpadToggle", function()
+    -- touchpad.sh is located in /usr/local/bin/touchpad.sh
+    -- following this guide https://wiki.archlinux.org/index.php/Touchpad_Synaptics#Software_toggle
+    awful.util.spawn("touchpad.sh", false) end),
+
+-- Keyboard Backlight
+-- TODO: implement properly
+awful.key({ }, "XF86KbdBrightnessDown", function()
     awful.util.spawn("xbacklight -dec 10", false) end),
-awful.key({ }, "XF86MonBrightnessUp", function ()
+awful.key({ }, "XF86KbdBrightnessUp", function()
     awful.util.spawn("xbacklight -inc 10", false) end),
+
 -- Volume
 awful.key({ }, "XF86AudioRaiseVolume", function () 
     awful.util.spawn("amixer set Master 5%+ &", false) end),
